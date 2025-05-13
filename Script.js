@@ -31,3 +31,6 @@ update();
 document.addEventListener("touchstart", function () {
     jump();
 });
+document.getElementById("jumpBtn").addEventListener("click", function () {
+  jump();
+});
