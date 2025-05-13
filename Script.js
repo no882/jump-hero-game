@@ -27,3 +27,7 @@ function update() {
 }
 
 update();
+// موبائل کے لیے touch control
+document.addEventListener("touchstart", function () {
+    jump();
+});
