@@ -1,54 +1,45 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+// Hero selection
+const hero = document.getElementById("hero");
 
-let hero = {
-    x: 50,
-    y: 350,
-    width: 50,
-    height: 50,
-    color: "green",
-    velocityY: 0,
-    jumpForce: -12,
-    gravity: 0.6,
-    grounded: true
-};
+// Gravity and jump settings
+let positionY = 0;
+let velocityY = 0;
+let gravity = 0.8;
+let jumpStrength = -15;
+let isJumping = false;
 
-let keys = {};
+// Handle jump on screen tap or spacebar
+function jump() {
+    if (!isJumping) {
+        velocityY = jumpStrength;
+        isJumping = true;
+    }
+}
 
-document.addEventListener("keydown", (e) => {
-    keys[e.code] = true;
-});
-
-document.addEventListener("keyup", (e) => {
-    keys[e.code] = false;
-});
-
+// Update hero position
 function update() {
-    // Jump
-    if (keys["Space"] && hero.grounded) {
-        hero.velocityY = hero.jumpForce;
-        hero.grounded = false;
+    velocityY += gravity;
+    positionY += velocityY;
+
+    if (positionY >= 0) {
+        positionY = 0;
+        velocityY = 0;
+        isJumping = false;
     }
 
-    hero.velocityY += hero.gravity;
-    hero.y += hero.velocityY;
+    hero.style.transform = `translateY(${positionY}px)`;
 
-    if (hero.y + hero.height >= canvas.height) {
-        hero.y = canvas.height - hero.height;
-        hero.velocityY = 0;
-        hero.grounded = true;
-    }
-
-    draw();
     requestAnimationFrame(update);
 }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+// Controls
+document.addEventListener("keydown", (e) => {
+    if (e.code === "Space" || e.code === "ArrowUp") {
+        jump();
+    }
+});
 
-    // Draw hero
-    ctx.fillStyle = hero.color;
-    ctx.fillRect(hero.x, hero.y, hero.width, hero.height);
-}
+document.addEventListener("touchstart", jump);
 
+// Start the loop
 update();
