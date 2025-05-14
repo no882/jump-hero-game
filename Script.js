@@ -34,3 +34,14 @@ document.addEventListener("touchstart", function () {
 document.getElementById("jumpBtn").addEventListener("click", function () {
   jump();
 });
+function jump() {
+  if (!jumping) {
+    jumping = true;
+    velocity = -15;
+
+    // Play sound
+    const sound = document.getElementById("jumpSound");
+    sound.currentTime = 0;
+    sound.play();
+  }
+}
