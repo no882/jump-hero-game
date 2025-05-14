@@ -1,4 +1,4 @@
-
+let score = 0;
 const hero = document.getElementById("hero");
 let jumping = false;
 let velocity = 0;
@@ -20,7 +20,8 @@ function update() {
     newBottom = 50;
     velocity = 0;
     jumping = false;
-  }
+  }score++;
+document.getElementById("score").innerText = score;
 
   hero.style.bottom = newBottom + "px";
   requestAnimationFrame(update);
