@@ -7,18 +7,12 @@
   <link rel="stylesheet" href="Style.css" />
 </head>
 <body>
-  <h1>Jump Hero</h1>
-  <div id="game">
+  <div id="gameArea">
     <div id="hero"></div>
-  <h2>Score: <span id="score">0</span></h2>
-    <div id="ground"></div>
+    <div id="obstacle"></div>
+    <div id="score">0</div>
+    <button id="jumpBtn">Jump</button>
+    <audio id="jumpSound" src="jump.mp3"></audio>
   </div>
-<div style="text-align: center; margin-top: 20px;">
-  <button id="jumpBtn" style="padding: 10px 20px; font-size: 18px;">جمپ کرو</button>
-</div>
-  <!-- Jump sound here -->
-  <audio id="jumpSound" src="jump.mp3"></audio>
-
-  <script src="Script.js"></script>
 </body>
 </html>
