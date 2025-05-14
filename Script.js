@@ -1,48 +1,50 @@
-let score = 0;
 const hero = document.getElementById("hero");
-let jumping = false;
-let velocity = 0;
-let gravity = 1;
+const obstacle = document.getElementById("obstacle");
+const scoreDisplay = document.getElementById("score");
+const jumpSound = document.getElementById("jumpSound");
 
-document.addEventListener("keydown", (event) => {
-  if (event.code === "Space" && !jumping) {
-    jumping = true;
-    velocity = -15;
-  }
-});
+let score = 0;
+let isJumping = false;
 
-function update() {
-  const heroTop = parseInt(window.getComputedStyle(hero).bottom);
-  velocity += gravity;
-  let newBottom = heroTop - velocity;
-
-  if (newBottom <= 50) {
-    newBottom = 50;
-    velocity = 0;
-    jumping = false;
-  }score++;
-document.getElementById("score").innerText = score;
-
-  hero.style.bottom = newBottom + "px";
-  requestAnimationFrame(update);
-}
-
-update();
-// موبائل کے لیے touch control
-document.addEventListener("touchstart", function () {
+document.getElementById("jumpBtn").addEventListener("click", () => {
+  if (!isJumping) {
     jump();
-});
-document.getElementById("jumpBtn").addEventListener("click", function () {
-  jump();
-});
-function jump() {
-  if (!jumping) {
-    jumping = true;
-    velocity = -15;
-
-    // Play sound
-    const sound = document.getElementById("jumpSound");
-    sound.currentTime = 0;
-    sound.play();
+    jumpSound.play();
   }
+});
+
+function jump() {
+  isJumping = true;
+  let jumpHeight = 0;
+  let upInterval = setInterval(() => {
+    if (jumpHeight >= 100) {
+      clearInterval(upInterval);
+      let downInterval = setInterval(() => {
+        if (jumpHeight <= 0) {
+          clearInterval(downInterval);
+          isJumping = false;
+        } else {
+          jumpHeight -= 5;
+          hero.style.bottom = 10 + jumpHeight + "px";
+        }
+      }, 20);
+    } else {
+      jumpHeight += 5;
+      hero.style.bottom = 10 + jumpHeight + "px";
+    }
+  }, 20);
 }
+
+// Collision detection
+setInterval(() => {
+  let heroTop = parseInt(window.getComputedStyle(hero).getPropertyValue("bottom"));
+  let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
+
+  if (obstacleLeft < (window.innerWidth - 100) && obstacleLeft > (window.innerWidth - 150) && heroTop < 60) {
+    alert("گیم ختم! تمہارا سکور: " + score);
+    location.reload();
+  } else if (obstacleLeft === window.innerWidth - 60) {
+    score++;
+    scoreDisplay.innerText = "سکور: " + score;
+  }
+}, 50);
